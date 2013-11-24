@@ -1,9 +1,5 @@
 var app = {
 	init: function() {
-		var $satPic = $('#satPic');
-
-		$satPic.hide();
-
 		google.maps.event.addListener(map, 'click', function(ev) {
 			if (app.vars.getImage)
 				app.getCoords(ev);
@@ -12,8 +8,10 @@ var app = {
 
 		});
 
+		$('#satPic').hide();
 		$('#getImage').click(app.activateRetrieve);
 		$('#satPic .remove').click(app.clearImage);
+		$('.imageHistory .remove').click(app.clearImage);
 	},
 
 	activateRetrieve: function() {
@@ -43,8 +41,13 @@ var app = {
 		app.vars.getImage = false;
 	},
 
-	clearImage: function() {
-		$('#satPic').hide('scale', function() { $('#satPic img').remove() });
+	clearImage: function(ev) {
+		var $parent = $(ev.target).closest('div');
+
+		if ($parent.hasClass('imageHistory'))
+			$parent.remove();
+		else
+			$parent.hide('scale', function() { $('#satPic img').remove() });
 	},
 
 	mapCursor: function(pointer) {
