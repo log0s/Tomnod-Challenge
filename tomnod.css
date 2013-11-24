@@ -4,11 +4,47 @@ html {
 
 body {
 	height: 100%;
-	margin: 0;
-	padding: 0;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+#wrapper {
+	height: 100%;
+	width: 100%;
+	position: relative;
 }
 
 #map {
 	height: 100%;
-	width: 60%;
+	width: 80%;
+	margin: 0;
+	display: inline-block;
+}
+
+#satPic {
+	height: 400px;
+	width: 400px;
+	position: relative;
+	top: -75%;
+	right: -28%;
+}
+
+#navbar {
+	height: 100%;
+	width: 19%;
+	margin: 0;
+	padding: 0;
+	display: inline-block;
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+#getImage {
+	border: 1px solid black;
+	text-align: center;
+	cursor: pointer;
 }

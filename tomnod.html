@@ -6,7 +6,17 @@
 </head>
 
 <body>
-	<div id="map"></div>
+	<div id="wrapper">
+		<div id="map"></div>
+
+		<div id="satPic"></div>
+
+		<div id="navbar">
+			<div id="getImage">
+				Retrieve Image
+			</div>
+		</div>
+	</div>
 
 	<script src='https://maps.googleapis.com/maps/api/js?key=AIzaSyApkRkAGWlfgxPx0LCCZWo_ceGsUHQNMCk&sensor=true'></script>
 	<script>
@@ -15,6 +25,7 @@
 		map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	</script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>"
 	<script src="tomnod.js"></script>
 
 <body>
