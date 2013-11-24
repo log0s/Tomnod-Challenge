@@ -1,6 +1,8 @@
 var app = {
 	init: function() {
-		$('#satPic').hide();
+		var $satPic = $('#satPic');
+
+		$satPic.hide();
 
 		google.maps.event.addListener(map, 'click', function(ev) {
 			if (app.vars.getImage)
@@ -11,6 +13,7 @@ var app = {
 		});
 
 		$('#getImage').click(app.activateRetrieve);
+		$('#satPic .remove').click(app.clearImage);
 	},
 
 	activateRetrieve: function() {
@@ -20,25 +23,28 @@ var app = {
 	},
 
 	getCoords: function(ev) {
-		app.vars.coords.lat = ev.latLng.lat();
-		app.vars.coords.lng = ev.latLng.lng();
+		var lat = ev.latLng.lat(),
+			lng = ev.latLng.lng();
 
-		app.setImage();
+		app.setImage( {lat: lat, lng: lng} );
 	},
 
-	setImage: function() {
+	setImage: function(coords) {
 		var $satPic = $('#satPic');
 
 		app.mapCursor('progress');
-		$satPic.css('background-image', 'url("http://dev1.tomnod.com/chip_api/chip/lat/' + app.vars.coords.lat + '/lng/' + app.vars.coords.lng + '")');
+		$satPic.append('<img src="http://dev1.tomnod.com/chip_api/chip/lat/' + coords.lat + '/lng/' + coords.lng + '"></img>');
 
-		//Using setTimeout to allow the image to load before showing it
-		setTimeout(function() { 
+		$('#satPic img').on('load', function() { 
 			$satPic.show('scale');
 			app.mapCursor('-webkit-grab');
-		}, 7000);
+		});
 
 		app.vars.getImage = false;
+	},
+
+	clearImage: function() {
+		$('#satPic').hide('scale', function() { $('#satPic img').remove() });
 	},
 
 	mapCursor: function(pointer) {

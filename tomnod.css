@@ -48,3 +48,25 @@ img {
 	text-align: center;
 	cursor: pointer;
 }
+
+.remove {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 16px;
+	width: 16px;
+	background-color: #ffffff;
+	cursor: pointer;
+	padding: 2px;
+}
+
+.imageHistory {
+	width: 100%;
+	height: 30%;
+	margin: 0;
+	padding: 0;
+}
+
+.imageHistory img {
+	width: 100%;
+}
