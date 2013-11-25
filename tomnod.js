@@ -30,15 +30,15 @@ var app = {
 		app.vars.coords.lat = position.lat;
 		app.vars.coords.lng = position.lng;
 
-		map.panTo(ev.latLng)
-		app.setImage(position, { preventSave: false });
+		app.setImage(position, { preventSave: false }, ev.latLng);
+		console.log(JSON.stringify(ev.latLng));
 	},
 
 	createImage: function(coords) {
 		return $('<img class="sat" src="http://dev1.tomnod.com/chip_api/chip/lat/' + coords.lat + '/lng/' + coords.lng + '"></img>');
 	},
 
-	setImage: function(coords, options) {
+	setImage: function(coords, options, latLng) {
 		var $satPic = $('#satPic');
 
 		app.vars.marker = new google.maps.Marker({
@@ -46,6 +46,8 @@ var app = {
     		map: map,
     		title:"Latitude: " + coords.lat + "\nLongitude: " + coords.lng
 		});
+
+		map.panTo(latLng);
 
 		app.mapCursor('progress');
 
@@ -77,9 +79,10 @@ var app = {
 	loadImage: function(ev) {
 		var coords = JSON.parse($(ev.target)
 						.closest('.imageHistory')
-						.attr('data-coords'));
+						.attr('data-coords')),
+			latLng = new google.maps.LatLng(coords.lat, coords.lng);
 
-		setTimeout(function() { app.setImage(coords, { preventSave: true }); }, 700); //give app.clearMainImage time to finish
+		setTimeout(function() { app.setImage(coords, { preventSave: true }, latLng); }, 700); //give app.clearMainImage time to finish
 		app.clearMainImage();
 	},
 
