@@ -23,10 +23,16 @@ var app = {
 	},
 
 	getCoords: function(ev) {
-		var lat = ev.latLng.lat(),
-			lng = ev.latLng.lng();
+		var position = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
 
-		app.setImage( {lat: lat, lng: lng} );
+		//Using global var to allow other functions to manipulate the marker
+		marker = new google.maps.Marker({
+    		position: position,
+    		map: map,
+    		title:"Satellite Image"
+		});
+
+		app.setImage(position);
 	},
 
 	createImage: function(coords) {

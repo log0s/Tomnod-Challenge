@@ -27,9 +27,9 @@ img {
 #satPic {
 	height: 400px;
 	width: 400px;
-	position: relative;
-	top: -75%;
-	right: -28%;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 #navbar {
