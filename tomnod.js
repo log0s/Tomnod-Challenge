@@ -30,6 +30,7 @@ var app = {
 		app.vars.coords.lat = position.lat;
 		app.vars.coords.lng = position.lng;
 
+		map.panTo(ev.latLng)
 		app.setImage(position, { preventSave: false });
 	},
 
