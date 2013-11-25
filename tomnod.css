@@ -39,13 +39,18 @@ img {
 	padding: 0;
 	display: inline-block;
 	position: absolute;
+	text-align: center;
 	right: 0;
 	top: 0;
 }
 
+#navbar h2 {
+	margin: 5px 0 5px 0;
+	cursor: default;
+}
+
 #getImage {
 	border: 1px solid black;
-	text-align: center;
 	cursor: pointer;
 }
 

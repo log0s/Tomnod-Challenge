@@ -24,12 +24,13 @@ var app = {
 
 	getCoords: function(ev) {
 		var position = { lat: ev.latLng.lat(), lng: ev.latLng.lng() };
+		app.vars.coords.lat = position.lat;
+		app.vars.coords.lng = position.lng;
 
-		//Using global var to allow other functions to manipulate the marker
-		marker = new google.maps.Marker({
+		app.vars.marker = new google.maps.Marker({
     		position: position,
     		map: map,
-    		title:"Satellite Image"
+    		title:"Latitude: " + position.lat + " | Longitude: " + position.lng
 		});
 
 		app.setImage(position);
@@ -56,6 +57,11 @@ var app = {
 
 	clearMainImage: function() {
 		$('#satPic').hide('scale', function() { $('#satPic .sat').remove(); });
+
+		if(!app.vars.marker.hasOwnProperty('empty')) {
+			app.vars.marker.setMap(null);
+			app.vars.marker = null;
+		};
 	},
 
 	clearHistoryImage: function(ev) {
@@ -81,6 +87,8 @@ var app = {
 
 	vars: {
 		getStatus: false,
+		marker: { empty: true },
+		coords: { lat: '', lng: '' },
 		historyTemplate: '<div class="imageHistory"><span class="remove"><img src="./Icons/remove.png"></img></span><span class="view"><img src="./Icons/view.png"></img></span></div>'
 	}
 };
