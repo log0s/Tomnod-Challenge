@@ -1,22 +1,24 @@
 var app = {
 	init: function() {
 		google.maps.event.addListener(map, 'click', function(ev) {
-			if (app.vars.getImage)
+			if (app.vars.getStatus) {
+				app.vars.getStatus = false;
 				app.getCoords(ev);
+			}
 			else
 				return;
-
 		});
 
-		$('#satPic').hide();
-		$('#getImage').click(app.activateRetrieve);
-		$('#satPic .remove').click(app.clearImage);
-		$('.imageHistory .remove').click(app.clearImage);
+		$('#satPic').hide()
+		$('#getImage').click(app.startRetrieve);
+		$('#satPic .remove').click(app.clearMainImage);
+		$('.imageHistory .remove').click(app.clearHistoryImage);
 	},
 
-	activateRetrieve: function() {
-		app.vars.getImage = true;
+	startRetrieve: function() {
+		app.vars.getStatus = true;
 
+		app.clearMainImage();
 		app.mapCursor('default');
 	},
 
@@ -27,27 +29,44 @@ var app = {
 		app.setImage( {lat: lat, lng: lng} );
 	},
 
+	createImage: function(coords) {
+		return $('<img class="sat" src="http://dev1.tomnod.com/chip_api/chip/lat/' + coords.lat + '/lng/' + coords.lng + '"></img>');
+	},
+
 	setImage: function(coords) {
 		var $satPic = $('#satPic');
 
 		app.mapCursor('progress');
-		$satPic.append('<img src="http://dev1.tomnod.com/chip_api/chip/lat/' + coords.lat + '/lng/' + coords.lng + '"></img>');
 
-		$('#satPic img').on('load', function() { 
+		$satPic.append(app.createImage(coords));
+
+		$('#satPic img').load(function() { 
 			$satPic.show('scale');
 			app.mapCursor('-webkit-grab');
 		});
 
-		app.vars.getImage = false;
+		app.saveImage(coords);
 	},
 
-	clearImage: function(ev) {
-		var $parent = $(ev.target).closest('div');
+	clearMainImage: function() {
+		$('#satPic').hide('scale', function() { $('#satPic .sat').remove(); });
+	},
 
-		if ($parent.hasClass('imageHistory'))
-			$parent.remove();
-		else
-			$parent.hide('scale', function() { $('#satPic img').remove() });
+	clearHistoryImage: function(ev) {
+		$(ev.target).closest('div').remove();
+	},
+
+	saveImage: function(coords) {
+		var $imageHistory = $('.imageHistory');
+
+		if ($imageHistory.length == 3)
+			$imageHistory.first().remove()
+
+		$(app.vars.historyTemplate)
+			.append(app.createImage(coords))
+			.appendTo($('#navbar'));
+
+		$('.imageHistory:last-child img.sat').load(function() { $(this).closest('div').show('scale') });
 	},
 
 	mapCursor: function(pointer) {
@@ -55,8 +74,8 @@ var app = {
 	},
 
 	vars: {
-		getImage: false,
-		coords: { lat: 0, lng: 0 }
+		getStatus: false,
+		historyTemplate: '<div class="imageHistory"><span class="remove"><img src="./Icons/remove.png"></img></span></div>'
 	}
 };
 

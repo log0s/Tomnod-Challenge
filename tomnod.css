@@ -66,6 +66,7 @@ img {
 	height: 30%;
 	margin: 10px 0 0 0;
 	padding: 0;
+	display: none;
 }
 
 .imageHistory img {
