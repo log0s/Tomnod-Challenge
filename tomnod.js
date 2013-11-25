@@ -9,10 +9,13 @@ var app = {
 				return;
 		});
 
-		$('#satPic').hide()
+		$('#satPic')
+			.hide()
+			.on('click', '.remove', app.clearMainImage);
+		$('#navbar')
+			.delegate('.remove', 'click', app.clearHistoryImage)
+			.delegate('.view', 'click', app.loadImage);
 		$('#getImage').click(app.startRetrieve);
-		$('#satPic .remove').click(app.clearMainImage);
-		$('.imageHistory .remove').click(app.clearHistoryImage);
 	},
 
 	startRetrieve: function() {
@@ -27,21 +30,21 @@ var app = {
 		app.vars.coords.lat = position.lat;
 		app.vars.coords.lng = position.lng;
 
-		app.vars.marker = new google.maps.Marker({
-    		position: position,
-    		map: map,
-    		title:"Latitude: " + position.lat + " | Longitude: " + position.lng
-		});
-
-		app.setImage(position);
+		app.setImage(position, { preventSave: false });
 	},
 
 	createImage: function(coords) {
 		return $('<img class="sat" src="http://dev1.tomnod.com/chip_api/chip/lat/' + coords.lat + '/lng/' + coords.lng + '"></img>');
 	},
 
-	setImage: function(coords) {
+	setImage: function(coords, options) {
 		var $satPic = $('#satPic');
+
+		app.vars.marker = new google.maps.Marker({
+    		position: coords,
+    		map: map,
+    		title:"Latitude: " + coords.lat + "\nLongitude: " + coords.lng
+		});
 
 		app.mapCursor('progress');
 
@@ -52,7 +55,31 @@ var app = {
 			app.mapCursor('-webkit-grab');
 		});
 
-		app.saveImage(coords);
+		if (!options.preventSave)
+			app.saveImage(coords);
+	},
+
+	saveImage: function(coords) {
+		var $imageHistory = $('.imageHistory');
+
+		if ($imageHistory.length == 3)
+			$imageHistory.first().remove()
+
+		$(app.vars.historyTemplate)
+			.append(app.createImage(coords))
+			.attr('data-coords', JSON.stringify(coords))
+			.appendTo($('#navbar'));
+
+		$('.imageHistory:last-child img.sat').load(function() { $(this).closest('div').show('scale') });
+	},
+
+	loadImage: function(ev) {
+		var coords = JSON.parse($(ev.target)
+						.closest('.imageHistory')
+						.attr('data-coords'));
+
+		setTimeout(function() { app.setImage(coords, { preventSave: true }); }, 700); //give app.clearMainImage time to finish
+		app.clearMainImage();
 	},
 
 	clearMainImage: function() {
@@ -66,19 +93,6 @@ var app = {
 
 	clearHistoryImage: function(ev) {
 		$(ev.target).closest('div').remove();
-	},
-
-	saveImage: function(coords) {
-		var $imageHistory = $('.imageHistory');
-
-		if ($imageHistory.length == 3)
-			$imageHistory.first().remove()
-
-		$(app.vars.historyTemplate)
-			.append(app.createImage(coords))
-			.appendTo($('#navbar'));
-
-		$('.imageHistory:last-child img.sat').load(function() { $(this).closest('div').show('scale') });
 	},
 
 	mapCursor: function(pointer) {
