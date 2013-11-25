@@ -75,7 +75,7 @@ var app = {
 
 	vars: {
 		getStatus: false,
-		historyTemplate: '<div class="imageHistory"><span class="remove"><img src="./Icons/remove.png"></img></span></div>'
+		historyTemplate: '<div class="imageHistory"><span class="remove"><img src="./Icons/remove.png"></img></span><span class="view"><img src="./Icons/view.png"></img></span></div>'
 	}
 };
 

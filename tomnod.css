@@ -49,15 +49,22 @@ img {
 	cursor: pointer;
 }
 
-.remove {
+.remove, .view{
 	position: absolute;
-	top: 0;
 	right: 0;
-	height: 16px;
-	width: 16px;
+	height: 20px;
+	width: 20px;
 	background-color: #ffffff;
 	cursor: pointer;
 	padding: 2px;
+}
+
+.remove {
+	top: 0;
+}
+
+.view {
+	bottom: 0;
 }
 
 .imageHistory {
